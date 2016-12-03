@@ -1,0 +1,19 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    colorize (0.8.1)
+    console_splash (2.0.1)
+      colorize
+    graphicsmagick (1.0.5)
+      subexec
+    subexec (0.2.3)
+
+PLATFORMS
+  x64-mingw32
+
+DEPENDENCIES
+  console_splash
+  graphicsmagick (~> 1.0, >= 1.0.5)
+
+BUNDLED WITH
+   1.13.6
