@@ -1,22 +1,21 @@
-
+# Public: Generates a randomly colored board for the game.
+#
+# width - Integer which represents the board's width
+# height - Integer which represents the board's height
+#
+# Example:
+#
+#    get_board(2,2)  # => [[green,red],[cyan,blue]]
+#
+# Returns a 2d array with random colour symbols
 def get_board(width, height)
-  # TODO: Implement this method
-  #
-  # This method should return a two-dimensional array.
-  # Each element of the array should be one of the
-  # following values (These are "symbols", you can use
-  # them like constant values):
-  # :red
-  # :blue
-  # :green
-  # :yellow
-  # :cyan
-  # :magenta
-  #
-  # It is important that this method is used because
-  # this will be used for checking the functionality
-  # of your implementation.
+  colors = [ :red, :blue, :green, :yellow, :cyan, :magenta ]
+  board = Array.new(height)
+  (0..height-1).each do |i|
+    board[i] = Array.new(width)
+    (0..width-1).each do |j|
+      board[i][j] = colors.sample
+    end
+  end
+  return board
 end
-
-# TODO: Implement everything else as described in the
-#       assignment brief.
