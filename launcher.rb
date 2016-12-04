@@ -1,5 +1,5 @@
 require 'console_splash'
-require 'floodit'
+require './floodit'
 
 # Public: Creates a game frame with the specified width and height
 #
@@ -8,8 +8,8 @@ require 'floodit'
 #
 # Example:
 #
-#   splash = create_game_frame(30,40)
-#   => creates a fancy game frame with 40 rows and 30 columns
+# splash = create_game_frame(30,40)
+# => creates a fancy game frame with 40 rows and 30 columns
 #
 # Returns the splash object, a game frame with no text inside
 def create_game_frame(width,height)
@@ -29,6 +29,7 @@ end
 # Returns a splash object, a game frame with no text inside
 def clear_game_screen(splash)
   system "clear" or system "cls"
+
   new_splash = create_game_frame(splash.columns,splash.lines)
   return new_splash
 end
@@ -74,14 +75,14 @@ end
 
 #Game init
 best_score = 0
-height = 18
-width = 48
-splash = create_game_frame(width,height)
+frame_height = 18
+frame_width = 48
+splash = create_game_frame(frame_width,frame_height)
 system "clear" or system "cls"
 display_splash_screen(splash)
 splash = clear_game_screen(splash)
 case main_menu(splash,best_score)
 when :s then start_game
 when :c then change_size
-when :q then puts
+when :q then abort
 end
