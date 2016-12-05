@@ -44,30 +44,43 @@ def is_a_color?(input)
           input == :m
 end
 
-def update(board, player_color, input, current_completition)
+def update(board, player_color, input, current_completition, x, y)
+  board[x][y] = input
+  current_completition += 1
+  if board[x + 1][y] == player_color
+    update(board, player, input, current_completition, x + 1, y)
+  if board[x][y + 1] == player_color
+    update(board, player, input, current_completition, x, y + 1)
+end
+
+def display_board(board, splash)
 end
 
 #begin WORK IN PROGRESS
 def start_game(columns,rows,splash)
+  #init
   board = get_board(columns,rows)
   turns = 0
   current_completition = 0
   player_color = board[0][0]
+
   loop do
     clear_game_screen()
     display_board(board)
     puts "Number of turns: #{turns}"
-    puts "Current completition: #{current_completition}%"
+    puts "Current completition:
+                        #{current_completition*100/board.columns*board.rows}%"
     print "Choose a color: "
     input = gets.chomp.to_sym
     if is_a_color?(input)
+      current_completition = 0
       board = update(board, player_color, input, current_completition)
-      display_board(splash,board)
       turns += 1
+      player_color = input
     elsif input == :q
       break
     else
-      print "Invalid input, please select a valid color"
+      print "Invalid input, please select a valid color or quit."
     end
 
     break if is_over(board) == false

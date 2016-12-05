@@ -84,5 +84,5 @@ splash = clear_game_screen(splash)
 case main_menu(splash,best_score)
 when :s then start_game
 when :c then change_size
-when :q then abort
+when :q then exit
 end
