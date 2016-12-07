@@ -1,4 +1,5 @@
 require 'console_splash'
+require 'colorize'
 require './launcher'
 
 # Public: Creates a randomly colored board for the game.
@@ -44,16 +45,41 @@ def is_a_color?(input)
           input == :m
 end
 
-def update(board, player_color, input, current_completition, x, y)
+# Public: Changes the state of the board based on given color
+# 
+# board - 2D Array of symbols that represents the board state
+# player_color - symbol of colour, currently owned by the player
+# input - symbol of colour, input from the player
+# x and y - Integers representing the coordinates of the top left corner(always 0, 0)
+# 
+# Example:
+# 
+#  update(board, :red, :blue, 0, 0)
+#  => changes all the player owned squares' red sqares in blue squares
+#  
+# returns nothing
+def update(board, player_color, input, x, y)
   board[x][y] = input
-  current_completition += 1
   if board[x + 1][y] == player_color
     update(board, player, input, current_completition, x + 1, y)
+  end
   if board[x][y + 1] == player_color
     update(board, player, input, current_completition, x, y + 1)
+  end
 end
 
-def display_board(board, splash)
+# Public: Displays a matrix of colored squares
+# 
+# board - 2D Array of symbols that represents the board state
+# 
+# Returns nothing
+def display_board(board)
+    (0..board.length - 1).each do |i|
+        (0..board[i].length - 1).each do |j|
+            print "██".colorize(board[i][j])
+        end
+        puts
+    end
 end
 
 #begin WORK IN PROGRESS
@@ -66,7 +92,7 @@ def start_game(columns,rows,splash)
 
   loop do
     clear_game_screen()
-    display_board(board)
+    display_board(board,splash)
     puts "Number of turns: #{turns}"
     puts "Current completition:
                         #{current_completition*100/board.columns*board.rows}%"

@@ -1,4 +1,5 @@
 require 'console_splash'
+require 'colorize'
 require './floodit'
 
 # Public: Creates a game frame with the specified width and height
@@ -82,7 +83,10 @@ system "clear" or system "cls"
 display_splash_screen(splash)
 splash = clear_game_screen(splash)
 case main_menu(splash,best_score)
-when :s then start_game
+when :s
+    system "clear" or system "cls"
+    board = get_board(8, 8)
+    display_board(board)
 when :c then change_size
 when :q then exit
 end
