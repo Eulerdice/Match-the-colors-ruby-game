@@ -75,21 +75,22 @@ def main_menu(splash,best_score)
 end
 
 #Game init
+system "clear" or system "cls"
 best_score = 0
 frame_height = 18
 frame_width = 48
 columns = 9
 rows = 14
 splash = create_game_frame(frame_width,frame_height)
-system "clear" or system "cls"
 display_splash_screen(splash)
-splash = clear_game_screen(splash)
 loop do
-case main_menu(splash,best_score)
-when :s
-    system "clear" or system "cls"
-    start_game(columns, rows)
-when :c then change_size
-when :q then exit
-end
+  splash = clear_game_screen(splash)
+  case main_menu(splash,best_score)
+    when :s
+      start_game(columns, rows)
+    when :c then change_size
+    when :q then
+      system "clear" or system "cls"
+      exit
+  end
 end
