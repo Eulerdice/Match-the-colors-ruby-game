@@ -30,28 +30,29 @@ end
 
 # Public: Checks if the argument is a valid color
 #
-# input - symbol : a single letter
+# input - symbol representing a color
 #
-# Example:
+# Examples:
 #
-# is_a_color?(:b) # => true
+# is_a_color?(:blue) # => true
+# is_a_color?(:black) # => false
 #
-# Returns true if the color is valid and false otherwise
+# Returns true if the color is from {:red, :blue, :green, :yellow, :cyan, :magenta}
 def is_a_color?(input)
-  return  input == :r ||
-          input == :b ||
-          input == :g ||
-          input == :y ||
-          input == :c ||
-          input == :m
+  return  input == :red ||
+          input == :blue ||
+          input == :green ||
+          input == :yellow ||
+          input == :cyan ||
+          input == :magenta
 end
 
 # Public: Changes the state of the board based on given color
 # 
 # board - 2D Array of symbols that represents the board state
 # player_color - symbol of colour, currently owned by the player
-# input - symbol of colour, input from the player
-# x and y - Integers representing the coordinates of the top left corner(always 0, 0)
+# input_color - symbol of colour, input from the player
+# x and y - Integers representing the coordinates of the top left corner(always called with 0, 0)
 # 
 # Example:
 # 
@@ -59,13 +60,13 @@ end
 #  => changes all the player owned squares' red sqares in blue squares
 #  
 # returns nothing
-def update(board, player_color, input, x, y)
-  board[x][y] = input
+def update(board, player_color, input_color, x, y)
+  board[x][y] = input_color
   if board[x + 1][y] == player_color
-    update(board, player, input, current_completition, x + 1, y)
+    update(board, player, input_color, current_completition, x + 1, y)
   end
   if board[x][y + 1] == player_color
-    update(board, player, input, current_completition, x, y + 1)
+    update(board, player, input_color, current_completition, x, y + 1)
   end
 end
 
@@ -78,16 +79,33 @@ def display_board(board)
     (0..board.length - 1).each do |i|
         (0..board[i].length - 1).each do |j|
             #buffer = j + splash.columns/2 -board[i].length
-            #splash.screen[i + 4][j + splash.columns/2 - (board[i].length / 2)] = Pixel.new("██", board[i][j], board[i][j])
-            #splash.write_pixel(i + 4, buffer, "██", {:fg => board[i][j], :bg => board[i][j]})
-            #splash.write_pixel(i + 4, splash.columns, ">", {:fg => :red, :bg => :white})
-            #splash.write_center(i + 4,splash.screen[i + 4][(splash.columns-board[i].length)/2..((splash.columns-board.length)/2 + board[i].length - 1)] + "██", {:fg => board[i][j], :bg => board[i][j]})
-            #splash.write_line(i + 4, "██",{:fg => board[i][j], :bg => board[i][j], :start => buffer})
             print "██".colorize(:color => board[i][j], :background => board[i][j])
         end
         puts
     end
 end
+# Public: Counts the number of times a color appears in the game board
+# 
+# board - 2D Array of symbols that represents the board state
+# color - Symbol representing a valid color
+# 
+# Example:
+# 
+#  color_in_board(board, :blue) # => 4 
+#  
+# Returns an integer : the number of appearances of color in board[][]  
+def color_in_board(board, color)
+    counter = 0
+    
+    board.each do |array|
+        array.each do |element|
+            counter += 1 if color == element
+        end
+    end
+    
+    return counter
+end
+    
 
 #begin WORK IN PROGRESS
 def start_game(columns,rows,splash)
@@ -106,8 +124,8 @@ def start_game(columns,rows,splash)
     print "Choose a color: "
     input = gets.chomp.to_sym
     if is_a_color?(input)
-      current_completition = color_in_board(input)
-      board = update(board, player_color, input, current_completition)
+      current_completition = color_in_board(board, input)
+      board = update(board, player_color, input, 0, 0)
       turns += 1
       player_color = input
     elsif input == :q
