@@ -68,6 +68,7 @@ def update(board, player_color, input_color, x, y)
   if board[x][y + 1] == player_color
     update(board, player_color, input_color, x, y + 1)
   end
+  return board
 end
 
 # Public: Displays a matrix of colored squares
@@ -118,6 +119,15 @@ def is_over?(board)
     return true
 end
 
+# Public: Converts color initial to full color name
+# 
+# input_color - Symbol single letter representing an initial for a valid color
+# 
+# Example:
+# 
+#  auto_complete_color(:r) # => :red
+#  
+# Returns a color symbol from {:red, :blue, :green, :yellow, :cyan, :magenta}
 def auto_complete_color(input_color)
     return :blue if input_color == :b
     return :red if input_color == :r
@@ -132,19 +142,18 @@ def start_game(columns, rows)
   #init
   board = get_board(columns,rows)
   turns = 0
-  current_completition = 0
   player_color = board[0][0]
+  current_completition = color_in_board(board,player_color)
 
   loop do
     system "clear" or system "cls"
     display_board(board)
     puts "Number of turns: #{turns}"
-    puts "Current completition: #{current_completition*100/columns*rows}%"
+    puts "Current completition: #{current_completition/(columns*rows)*100}%"
     print "Choose a color: "
     input = gets.chomp.to_sym
     if is_a_color?(input)
       input = auto_complete_color(input)
-      puts input
       current_completition = color_in_board(board, input)
       board = update(board, player_color, input, 0, 0)
       turns += 1
@@ -154,8 +163,7 @@ def start_game(columns, rows)
     else
       print "Invalid input, please select a valid color or quit."
     end
-    system 'clear'
-    display_board(board)
+    
     break if is_over?(board)
   end
 end
