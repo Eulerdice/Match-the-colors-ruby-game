@@ -84,7 +84,7 @@ display_splash_screen(splash)
 splash = clear_game_screen(splash)
 case main_menu(splash,best_score)
 when :s
-    system "clear" or system "cls"
+    splash = clear_game_screen(splash)
     board = get_board(8, 8)
     display_board(board)
 when :c then change_size

@@ -1,5 +1,6 @@
 require 'console_splash'
 require 'colorize'
+require 'colorized_string'
 require './launcher'
 
 # Public: Creates a randomly colored board for the game.
@@ -76,7 +77,13 @@ end
 def display_board(board)
     (0..board.length - 1).each do |i|
         (0..board[i].length - 1).each do |j|
-            print "██".colorize(board[i][j])
+            #buffer = j + splash.columns/2 -board[i].length
+            #splash.screen[i + 4][j + splash.columns/2 - (board[i].length / 2)] = Pixel.new("██", board[i][j], board[i][j])
+            #splash.write_pixel(i + 4, buffer, "██", {:fg => board[i][j], :bg => board[i][j]})
+            #splash.write_pixel(i + 4, splash.columns, ">", {:fg => :red, :bg => :white})
+            #splash.write_center(i + 4,splash.screen[i + 4][(splash.columns-board[i].length)/2..((splash.columns-board.length)/2 + board[i].length - 1)] + "██", {:fg => board[i][j], :bg => board[i][j]})
+            #splash.write_line(i + 4, "██",{:fg => board[i][j], :bg => board[i][j], :start => buffer})
+            print "██".colorize(:color => board[i][j], :background => board[i][j])
         end
         puts
     end
@@ -91,15 +98,15 @@ def start_game(columns,rows,splash)
   player_color = board[0][0]
 
   loop do
-    clear_game_screen()
-    display_board(board,splash)
+    system "clear" or system "cls"
+    display_board(board)
     puts "Number of turns: #{turns}"
     puts "Current completition:
                         #{current_completition*100/board.columns*board.rows}%"
     print "Choose a color: "
     input = gets.chomp.to_sym
     if is_a_color?(input)
-      current_completition = 0
+      current_completition = color_in_board(input)
       board = update(board, player_color, input, current_completition)
       turns += 1
       player_color = input
