@@ -28,23 +28,23 @@ def get_board(width, height)
   return board
 end
 
-# Public: Checks if the argument is a valid color
+# Public: Checks if the argument is the initial of a valid color
 #
-# input - symbol representing a color
+# color - symbol : a single letter
 #
 # Examples:
 #
-# is_a_color?(:blue) # => true
-# is_a_color?(:black) # => false
+# is_a_color?(:b) # => true
+# is_a_color?(:x) # => false
 #
-# Returns true if the color is from {:red, :blue, :green, :yellow, :cyan, :magenta}
-def is_a_color?(input)
-  return  input == :red ||
-          input == :blue ||
-          input == :green ||
-          input == :yellow ||
-          input == :cyan ||
-          input == :magenta
+# Returns true if the color is from {:r, :b, :g, :y, :c, :m}
+def is_a_color?(color)
+  return  color == :r ||
+          color == :b ||
+          color == :g ||
+          color == :y ||
+          color == :c ||
+          color == :m
 end
 
 # Public: Changes the state of the board based on given color
@@ -63,10 +63,10 @@ end
 def update(board, player_color, input_color, x, y)
   board[x][y] = input_color
   if board[x + 1][y] == player_color
-    update(board, player, input_color, current_completition, x + 1, y)
+    update(board, player_color, input_color, x + 1, y)
   end
   if board[x][y + 1] == player_color
-    update(board, player, input_color, current_completition, x, y + 1)
+    update(board, player_color, input_color, x, y + 1)
   end
 end
 
@@ -105,10 +105,30 @@ def color_in_board(board, color)
     
     return counter
 end
-    
+
+# Public: Checks if the game is finished
+# 
+# board - 2D Array of symbols that represents the board state
+# 
+# Returns false if the game is over and true otherwise
+def is_over?(board)
+    (0..board.length - 2).each do |element|
+        return false if board[element] != board[element + 1]
+    end
+    return true
+end
+
+def auto_complete_color(input_color)
+    return :blue if input_color == :b
+    return :red if input_color == :r
+    return :green if input_color == :g
+    return :yellow if input_color == :y
+    return :cyan if input_color == :c
+    return :magenta if input_color == :m
+end
 
 #begin WORK IN PROGRESS
-def start_game(columns,rows,splash)
+def start_game(columns, rows)
   #init
   board = get_board(columns,rows)
   turns = 0
@@ -119,11 +139,12 @@ def start_game(columns,rows,splash)
     system "clear" or system "cls"
     display_board(board)
     puts "Number of turns: #{turns}"
-    puts "Current completition:
-                        #{current_completition*100/board.columns*board.rows}%"
+    puts "Current completition: #{current_completition*100/columns*rows}%"
     print "Choose a color: "
     input = gets.chomp.to_sym
     if is_a_color?(input)
+      input = auto_complete_color(input)
+      puts input
       current_completition = color_in_board(board, input)
       board = update(board, player_color, input, 0, 0)
       turns += 1
@@ -133,8 +154,9 @@ def start_game(columns,rows,splash)
     else
       print "Invalid input, please select a valid color or quit."
     end
-
-    break if is_over(board) == false
+    system 'clear'
+    display_board(board)
+    break if is_over?(board)
   end
 end
 #end

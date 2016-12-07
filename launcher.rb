@@ -78,15 +78,16 @@ end
 best_score = 0
 frame_height = 18
 frame_width = 48
+columns = 9
+rows = 14
 splash = create_game_frame(frame_width,frame_height)
 system "clear" or system "cls"
 display_splash_screen(splash)
 splash = clear_game_screen(splash)
 case main_menu(splash,best_score)
 when :s
-    splash = clear_game_screen(splash)
-    board = get_board(8, 8)
-    display_board(board)
+    system "clear" or system "cls"
+    start_game(columns, rows)
 when :c then change_size
 when :q then exit
 end
