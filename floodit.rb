@@ -151,17 +151,16 @@ def start_game(columns, rows)
   board = get_board(columns,rows)
   turns = 0
   player_color = board[0][0]
-  current_completition = color_in_board(board,player_color)
   puts color_in_board(board,player_color)
   loop do
     system "clear" or system "cls"
     display_board(board)
     puts "Number of turns: #{turns}"
-    puts "Current completition: #{current_completition/(columns*rows)*100}%"
+    current_completition = color_in_board(board,player_color)*100/(columns*rows).to_f
+    puts "Current completition: #{current_completition.to_i}%"
     print "Choose a color: "
     input = auto_complete(gets.chomp.to_sym)
     if is_a_color?(input) && input != player_color
-      current_completition = color_in_board(board, input)
       board = update(board, player_color, input, 0, 0)
       turns += 1
       player_color = input
