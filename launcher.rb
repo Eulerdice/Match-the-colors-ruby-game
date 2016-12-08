@@ -63,10 +63,10 @@ def main_menu(splash,best_score)
   splash.write_center(7,"s = Start Game")
   splash.write_center(8,"c = Change Size")
   splash.write_center(9,"q = Quit")
-  if best_score == 0
-    splash.write_center(11,"No games have been played yet.")
+  if best_score[0] != -1
+    splash.write_center(11,"Best Score: #{best_score[0]}")
   else
-    splash.write_center(11,"Best Score: #{best_score.to_s}")
+    splash.write_center(11,"No games have been played yet.")
   end
   splash.splash
   puts
@@ -81,7 +81,7 @@ DEFAULT_COLUMNS = 14
 DEFAULT_ROWS = 9
 
 # Game init
-best_score = 0
+best_score = [-1]
 columns = DEFAULT_COLUMNS
 rows = DEFAULT_ROWS
 # Display the splash screen after clearing the screen
@@ -93,9 +93,20 @@ loop do
   splash = clear_game_screen(splash)
   case main_menu(splash,best_score)
     when :s
-      start_game(columns, rows)
-    when :c then change_size
-    when :q then
+      start_game(columns, rows, best_score)
+    when :c
+      print "Width(Currently #{columns})?"
+      auxiliary = gets.chomp
+      next if auxiliary.to_sym == :q
+      columns = auxiliary.to_i
+      
+      best_score[0] = -1
+      
+      print "Height(Currently #{rows})?"
+      auxiliary = gets.chomp
+      next if auxiliary.to_sym == :q
+      rows = auxiliary.to_i
+    when :q
       system "clear" or system "cls"
       exit
   end
