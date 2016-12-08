@@ -74,15 +74,21 @@ def main_menu(splash,best_score)
   return gets.chomp.to_sym
 end
 
-#Game init
-system "clear" or system "cls"
+# Defaults and constants
+FRAME_HEIGHT = 18
+FRAME_WIDTH = 48
+DEFAULT_COLUMNS = 14
+DEFAULT_ROWS = 9
+
+# Game init
 best_score = 0
-frame_height = 18
-frame_width = 48
-columns = 9
-rows = 14
-splash = create_game_frame(frame_width,frame_height)
+columns = DEFAULT_COLUMNS
+rows = DEFAULT_ROWS
+# Display the splash screen after clearing the screen
+system "clear" or system "cls"
+splash = create_game_frame(FRAME_WIDTH,FRAME_HEIGHT)
 display_splash_screen(splash)
+# Game loop untill player exits
 loop do
   splash = clear_game_screen(splash)
   case main_menu(splash,best_score)

@@ -1,6 +1,5 @@
 require 'console_splash'
 require 'colorize'
-require 'colorized_string'
 require './launcher'
 
 # Public: Creates a randomly colored board for the game.
@@ -51,14 +50,16 @@ end
 # board - 2D Array of symbols that represents the board state
 # player_color - symbol of colour, currently owned by the player
 # input_color - symbol of colour, input from the player
-# x and y - Integers representing the coordinates of the top left corner(always called with 0, 0)
+# x and y - Integers representing the coordinates of the player's starting
+#                                                                    point
 #
 # Example:
 #
 #  update(board, :red, :blue, 0, 0)
-#  => changes all the player owned squares' red sqares in blue squares
+#  => changes all the player owned squares' color in blue starting from top
+#                                                                left corner
 #
-# returns nothing
+# returns 2D Array of symbols that represents the board state
 def update(board, player_color, input_color, x, y)
   board[x][y] = input_color
   if x < board.length - 1 && board[x + 1][y] == player_color
