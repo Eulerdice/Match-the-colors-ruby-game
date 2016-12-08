@@ -63,7 +63,7 @@ end
 # returns 2D Array of symbols that represents the board state
 def update(board, player_color, input_color, x, y)
   board[x][y] = input_color
-
+  # Recursively call the function for all nearby positions
   if x < board.length - 1 && board[x + 1][y] == player_color
     update(board, player_color, input_color, x + 1, y)
   end
@@ -121,11 +121,13 @@ end
 #
 # Returns false if the game is over and true otherwise
 def is_over?(board)
+  # if board has more than one row, compare rows
   if board.length > 1
     (0..board.length - 2).each do |element|
       #in case any 2 arrays are not equal, the game is not over
       return false if board[element] != board[element + 1]
     end
+  # else compare each element on the single row
   else
     (0..board[0].length - 2).each do |element|
       return false if board[0][element] != board[0][element + 1]
@@ -157,31 +159,38 @@ def auto_complete(input_color)
   end
 end
 
+# Public: Function to start a game of flood-it
+#
+# columns - Integer : the number game board's columns
+# rows - Integer : the number of game board's rows
+# best_score - Integer : player's current best score
+#
+# Returns nothing
 def start_game(columns, rows, best_score)
   #init
   board = get_board(columns,rows)
   turns = 0
   player_color = board[0][0]
-  puts color_in_board(board,player_color)
+  # Gameplay loop untill the board has only one color
   loop do
     system "clear" or system "cls"
     display_board(board)
     puts "Number of turns: #{turns}"
     current_completition = color_in_board(board,player_color)*100/(columns*rows).to_f
     puts "Current completition: #{current_completition.to_i}%"
-
+    # Check if the game is over
     if is_over?(board)
-      if best_score[0] != -1
-          best_score[0] = [best_score[0], turns].min
+      if best_score[0] == -1
+        best_score[0] = turns
       else
-          best_score[0] = turns
+        best_score[0] = [best_score[0], turns].min
       end
       puts "You won after #{turns} turns"
       gets
       system "clear" or system "cls"
       break
     end
-
+    # Take user's input and update the board respectively
     print "Choose a color: "
     input = auto_complete(gets.chomp.to_sym)
     if is_a_color?(input) && input != player_color

@@ -1,5 +1,4 @@
 require 'console_splash'
-require 'colorize'
 require './floodit'
 
 # Public: Creates a game frame with the specified width and height
@@ -23,11 +22,11 @@ def create_game_frame(width,height)
 
   return splash
 end
-# Public: Clears the screen and resets the splash object's text
+# Public: Clears the screen and resets the splash's text
 #
 # splash - ConsoleSplash object that represents the game frame
 #
-# Returns a splash object, a game frame with no text inside
+# Returns a splash object with no text inside
 def clear_game_screen(splash)
   system "clear" or system "cls"
 
@@ -59,6 +58,9 @@ end
 # Returns a symbol which represents the input from the user, which can be
 # s,c or q.
 def main_menu(splash,best_score)
+  # Make sure game frame is empty
+  splash = clear_game_screen(splash)
+
   splash.write_center(5,"Main Menu")
   splash.write_center(7,"s = Start Game")
   splash.write_center(8,"c = Change Size")
@@ -84,28 +86,27 @@ DEFAULT_ROWS = 9
 best_score = [-1]
 columns = DEFAULT_COLUMNS
 rows = DEFAULT_ROWS
-# Display the splash screen after clearing the screen
+# Create and display the splash screen after clearing the screen
 system "clear" or system "cls"
 splash = create_game_frame(FRAME_WIDTH,FRAME_HEIGHT)
 display_splash_screen(splash)
 # Game loop untill player exits
 loop do
-  splash = clear_game_screen(splash)
+  # Main menu that connects all the pieces together
   case main_menu(splash,best_score)
-  when :s
-    start_game(columns, rows, best_score)
+  when :s then start_game(columns, rows, best_score)
   when :c
     print "Width(Currently #{columns})?"
-    auxiliary = gets.chomp
-    next if auxiliary.to_sym == :q
-    columns = auxiliary.to_i
-
+    input = gets.chomp
+    next if input.to_sym == :q
+    columns = input.to_i
+    # Reset best score since game board changed sizes
     best_score[0] = -1
 
     print "Height(Currently #{rows})?"
-    auxiliary = gets.chomp
-    next if auxiliary.to_sym == :q
-    rows = auxiliary.to_i
+    input = gets.chomp
+    next if input.to_sym == :q
+    rows = input.to_i
   when :q
     system "clear" or system "cls"
     exit
