@@ -15,7 +15,7 @@ require './launcher'
 def get_board(width, height)
   #array with all possible colors
   colors = [:red, :blue, :green, :yellow, :cyan, :magenta]
-    
+
   board = Array.new(height)
   (0..height-1).each do |i|
     board[i] = Array.new(width)
@@ -63,7 +63,7 @@ end
 # returns 2D Array of symbols that represents the board state
 def update(board, player_color, input_color, x, y)
   board[x][y] = input_color
-    
+
   if x < board.length - 1 && board[x + 1][y] == player_color
     update(board, player_color, input_color, x + 1, y)
   end
@@ -121,11 +121,17 @@ end
 #
 # Returns false if the game is over and true otherwise
 def is_over?(board)
-  (0..board.length - 2).each do |element|
-    #in case any 2 arrays are not the equal, the game is not over
-    return false if board[element] != board[element + 1]
+  if board.length > 1
+    (0..board.length - 2).each do |element|
+      #in case any 2 arrays are not equal, the game is not over
+      return false if board[element] != board[element + 1]
+    end
+  else
+    (0..board[0].length - 2).each do |element|
+      return false if board[0][element] != board[0][element + 1]
+    end
   end
-  #all arrays are equal therefore the game is over
+  #all elements are equal therefore the game is over
   return true
 end
 
@@ -140,13 +146,15 @@ end
 # Returns a color symbol from {:red, :blue, :green, :yellow, :cyan, :magenta}
 #         or :quit
 def auto_complete(input_color)
-  return :blue if input_color == :b
-  return :red if input_color == :r
-  return :green if input_color == :g
-  return :yellow if input_color == :y
-  return :cyan if input_color == :c
-  return :magenta if input_color == :m
-  return :quit if input_color == :q
+  case input_color
+  when :b then return :blue
+  when :r then return :red
+  when :g then return :green
+  when :y then return :yellow
+  when :c then return :cyan
+  when :m then return :magenta
+  when :q then return :quit
+  end
 end
 
 def start_game(columns, rows, best_score)
@@ -161,7 +169,7 @@ def start_game(columns, rows, best_score)
     puts "Number of turns: #{turns}"
     current_completition = color_in_board(board,player_color)*100/(columns*rows).to_f
     puts "Current completition: #{current_completition.to_i}%"
-      
+
     if is_over?(board)
       if best_score[0] != -1
           best_score[0] = [best_score[0], turns].min
@@ -173,7 +181,7 @@ def start_game(columns, rows, best_score)
       system "clear" or system "cls"
       break
     end
- 
+
     print "Choose a color: "
     input = auto_complete(gets.chomp.to_sym)
     if is_a_color?(input) && input != player_color
@@ -185,12 +193,3 @@ def start_game(columns, rows, best_score)
     end
   end
 end
-
-
-# 1.Create new board
-# 2.Display number of turns, % completed and ask for user input r,g,b,y,m,c
-# 3.Check if game_is_won
-# 3.1.If yes check if number of turns > high Score
-# 3.1.1.If yes update high Score
-# 3.2.If not check if user input is valid(color is in range and color exists)
-# 3.2.1. If yes,

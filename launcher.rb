@@ -92,22 +92,22 @@ display_splash_screen(splash)
 loop do
   splash = clear_game_screen(splash)
   case main_menu(splash,best_score)
-    when :s
-      start_game(columns, rows, best_score)
-    when :c
-      print "Width(Currently #{columns})?"
-      auxiliary = gets.chomp
-      next if auxiliary.to_sym == :q
-      columns = auxiliary.to_i
-      
-      best_score[0] = -1
-      
-      print "Height(Currently #{rows})?"
-      auxiliary = gets.chomp
-      next if auxiliary.to_sym == :q
-      rows = auxiliary.to_i
-    when :q
-      system "clear" or system "cls"
-      exit
+  when :s
+    start_game(columns, rows, best_score)
+  when :c
+    print "Width(Currently #{columns})?"
+    auxiliary = gets.chomp
+    next if auxiliary.to_sym == :q
+    columns = auxiliary.to_i
+
+    best_score[0] = -1
+
+    print "Height(Currently #{rows})?"
+    auxiliary = gets.chomp
+    next if auxiliary.to_sym == :q
+    rows = auxiliary.to_i
+  when :q
+    system "clear" or system "cls"
+    exit
   end
 end
