@@ -66,7 +66,7 @@ def main_menu(splash,best_score)
   splash.write_center(8,"c = Change Size")
   splash.write_center(9,"q = Quit")
   if best_score[0] != -1
-    splash.write_center(11,"Best Score: #{best_score[0]}")
+    splash.write_center(11,"Best Game: #{best_score[0]} turns")
   else
     splash.write_center(11,"No games have been played yet.")
   end

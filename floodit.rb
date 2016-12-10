@@ -88,7 +88,7 @@ end
 def display_board(board)
   (0..board.length - 1).each do |i|
     (0..board[i].length - 1).each do |j|
-      print "██".colorize(:color => board[i][j], :background => board[i][j])
+      print "  ".colorize(:background => board[i][j])
     end
     puts
   end
@@ -176,8 +176,8 @@ def start_game(columns, rows, best_score)
     system "clear" or system "cls"
     display_board(board)
     puts "Number of turns: #{turns}"
-    current_completition = color_in_board(board,player_color)*100/(columns*rows).to_f
-    puts "Current completition: #{current_completition.to_i}%"
+    current_completion = color_in_board(board,player_color)*100/(columns*rows).to_f
+    puts "Current completion: #{current_completion.to_i}%"
     # Check if the game is over
     if is_over?(board)
       if best_score[0] == -1
