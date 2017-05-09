@@ -191,6 +191,7 @@ def start_game(columns, rows, best_score)
       break
     end
     # Take user's input and update the board respectively
+    puts "Possible inputs: q for quit, r for red/ b for blue/ g for green/ y for yellow/ c for cyan/ m for magenta"
     print "Choose a color: "
     input = auto_complete(gets.chomp.to_sym)
     if is_a_color?(input) && input != player_color
